@@ -139,7 +139,7 @@ GenerateAccessorDeclarations(io::Printer* printer) const {
   printer->Print(variables_, "$deprecated_attr$$type$* $release_name$();\n");
   printer->Annotate("release_name", descriptor_);
   printer->Print(variables_,
-                 "$deprecated_attr$$type$& mutable_$name$();\n");
+                 "$deprecated_attr$$type$& $name$();\n");
   printer->Annotate("{", "}", descriptor_);
   printer->Print(variables_,
                  "$deprecated_attr$void ${$set_allocated_$name$$}$"
@@ -268,7 +268,7 @@ GenerateInlineAccessorDefinitions(io::Printer* printer) const {
   }
 
   printer->Print(variables_,
-    "inline $type$& $classname$::mutable_$name$() {\n"
+    "inline $type$& $classname$::$name$() {\n"
     "$type_reference_function$"
     "  $set_hasbit$\n"
     "  if ($name$_ == NULL) {\n");
@@ -380,7 +380,7 @@ GenerateMergingCode(io::Printer* printer) const {
       "    from._internal_$name$());\n");
   } else {
     printer->Print(variables_,
-      "mutable_$name$().$type$::MergeFrom(from.$name$());\n");
+      "$name$().$type$::MergeFrom(from.$name$());\n");
   }
 }
 
@@ -424,11 +424,11 @@ GenerateMergeFromCodedStream(io::Printer* printer) const {
   } else if (descriptor_->type() == FieldDescriptor::TYPE_MESSAGE) {
     printer->Print(variables_,
       "DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(\n"
-      "     input, &mutable_$name$()));\n");
+      "     input, &$name$()));\n");
   } else {
     printer->Print(variables_,
       "DO_(::google::protobuf::internal::WireFormatLite::ReadGroup(\n"
-      "      $number$, input, &mutable_$name$()));\n");
+      "      $number$, input, &$name$()));\n");
   }
 }
 
@@ -561,7 +561,7 @@ GenerateInlineAccessorDefinitions(io::Printer* printer) const {
   }
 
   printer->Print(variables_,
-    "inline $type$& $classname$::mutable_$name$() {\n"
+    "inline $type$& $classname$::$name$() {\n"
     "  if (!has_$name$()) {\n"
     "    clear_$oneof_name$();\n"
     "    set_has_$name$();\n"
